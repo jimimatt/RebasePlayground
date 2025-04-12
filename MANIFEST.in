@@ -1,0 +1,3 @@
+include src/mathquiz/data/*
+include src/mathquiz/data/README.md
+include src/mathquiz/data/LICENSE.md

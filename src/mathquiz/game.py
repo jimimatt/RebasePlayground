@@ -14,7 +14,6 @@ class MathQuiz:
         print("Let's start!\n")
 
         score = 0
-
         for i, idx in enumerate(random.sample(range(len(self.data)), k=total_questions)):
             math_question = self.data[idx]
             user_answer = input(f"Question {i + 1}: {math_question.question}\n")

@@ -1,6 +1,6 @@
 import importlib.resources
-
-import pandas as pd
+import json
+import zipfile
 
 
 class MathQuestion:
@@ -17,17 +17,15 @@ class MathQuestion:
 
 
 def load_questions() -> list[MathQuestion]:
-    """Load questions return a list of MathQuestion objects."""
-    with importlib.resources.path("mathquiz.data", "math_questions.zip") as data_path:
-        df = pd.read_json(data_path, compression="zip")
+    """Load questions and return a list of MathQuestion objects."""
+    with (
+        importlib.resources.path("mathquiz.data", "math_questions.zip") as data_path,
+        zipfile.ZipFile(data_path) as zip_file,
+        zip_file.open('math_questions.json') as json_file,
+    ):
+        data = json.load(json_file)
 
     questions: list[MathQuestion] = []
-    for _, row in df.iterrows():
-        question = MathQuestion(
-            question=row["question"],
-            answer=row["answer"],
-            difficulty=row["difficulty"],
-            category=row["category"],
-        )
-        questions.append(question)
+    for item in data:
+        questions.append(MathQuestion(**item))
     return questions

@@ -1,5 +1,7 @@
 import random
 
+import click
+
 from mathquiz.game_data import MathQuestion, load_questions
 
 
@@ -7,9 +9,11 @@ class MathQuiz:
     def __init__(self) -> None:
         self.data: list[MathQuestion] = load_questions()
 
-    def run_game(self, total_questions: int = 10, category: str | None = None) -> None:
+    def run_game(self, total_questions: int = 10) -> None:
+        if total_questions <= 0:
+            raise ValueError("Total questions must be greater than 0.")
         print("Welcome to the Math Quiz Game!")
-        print(f"You will be asked a series of {category or ''} math questions.")
+        print(f"You will be asked {total_questions} math question{'s' if total_questions > 1 else ''}.")
         print("Try to answer them correctly!")
         print("Let's start!\n")
 
@@ -28,9 +32,11 @@ class MathQuiz:
         print(f"Game Over! Your score is {score}/{total_questions}.")
 
 
-def main() -> None:
+@click.command()
+@click.option('--total_questions', default=10, help='Number of questions.')
+def main(total_questions: int) -> None:
     quiz = MathQuiz()
-    quiz.run_game()
+    quiz.run_game(total_questions=total_questions)
 
 
 if __name__ == "__main__":

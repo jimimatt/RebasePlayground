@@ -1,6 +1,18 @@
 import importlib.resources
+from enum import Enum
 
 import pandas as pd
+
+
+class AreaOfMathematics(Enum):
+    PROBABILITY = 'probability'
+    ARITHMETIC = 'arithmetic'
+    NUMBER_THEORY = 'number theory'
+    STATISTICS = 'statistics'
+    GEOMETRY = 'geometry'
+    LINEAR_ALGEBRA = 'linear algebra'
+    ALGEBRA = 'algebra'
+    CALCULUS = 'calculus'
 
 
 class MathQuestion:
@@ -16,7 +28,7 @@ class MathQuestion:
         return answer.replace(' ', '').lower() == self.answer.replace(' ', '').lower()
 
 
-def load_questions() -> list[MathQuestion]:
+def load_questions(categories: list[str]) -> list[MathQuestion]:
     """Load questions return a list of MathQuestion objects."""
     with importlib.resources.path("mathquiz.data", "math_questions.zip") as data_path:
         df = pd.read_json(data_path, compression="zip")
@@ -30,4 +42,6 @@ def load_questions() -> list[MathQuestion]:
             category=row["category"],
         )
         questions.append(question)
+    if len(categories) > 0:
+        questions = list(filter(lambda q: q.category in categories, questions))
     return questions

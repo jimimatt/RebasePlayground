@@ -2,16 +2,19 @@ import random
 
 import click
 
-from mathquiz.game_data import MathQuestion, load_questions
+from mathquiz.game_data import AreaOfMathematics, MathQuestion, load_questions
 
 
 class MathQuiz:
-    def __init__(self) -> None:
-        self.data: list[MathQuestion] = load_questions()
+    def __init__(self, category: list[str]) -> None:
+        self.data: list[MathQuestion] = load_questions(categories=category)
 
     def run_game(self, total_questions: int = 10) -> None:
         if total_questions <= 0:
             raise ValueError("Total questions must be greater than 0.")
+        if total_questions > len(self.data):
+            total_questions = len(self.data)
+            print(f"Warning: Only {len(self.data)} questions available. Adjusting total questions to {len(self.data)}.")
         print("Welcome to the Math Quiz Game!")
         print(f"You will be asked {total_questions} math question{'s' if total_questions > 1 else ''}.")
         print("Try to answer them correctly!")
@@ -34,8 +37,15 @@ class MathQuiz:
 
 @click.command()
 @click.option('--total_questions', default=10, help='Number of questions.')
-def main(total_questions: int) -> None:
-    quiz = MathQuiz()
+@click.option(
+    '--category',
+    '-c',
+    multiple=True,
+    type=click.Choice([category.value for category in AreaOfMathematics], case_sensitive=False),
+    help='Areas of mathematics to include',
+)
+def main(total_questions: int, category: list[str]) -> None:
+    quiz = MathQuiz(category=category)
     quiz.run_game(total_questions=total_questions)
 
 

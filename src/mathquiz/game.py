@@ -36,7 +36,7 @@ class MathQuiz:
 
 
 @click.command()
-@click.option('--total_questions', default=10, help='Number of questions.')
+@click.option('--total-questions', default=10, help='Number of questions.')
 @click.option(
     '--category',
     '-c',

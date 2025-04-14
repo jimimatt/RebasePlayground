@@ -32,7 +32,10 @@ Rebase workflow might cause trouble when used artless in a team (*remote* repo).
 Some advise to circumnavigate possibly appearing icebergs:
 
 - Avoid workflows that incorporate [force pulls](https://www.freecodecamp.org/news/git-pull-force-how-to-overwrite-local-changes-with-git/).
-- After a rebase you need to force push the branch to the remote. Be sure to either **work exclusively** on that branch or **talk to participans** to coordinate the force push.
+- After a rebase you need to force push the branch to the remote. Be sure to either 
+  - **work exclusively** on that branch or
+  - **talk to participans** to coordinate the force push or
+  - use `--force-with-lease` option when [force pushing](https://git-scm.com/docs/git-push)
 - Don't touch the **main branch**. Try to get the history nice & clean before the *feature* finds its way into the *main*.
 - In case you have a real good reason to mangle with the *main*:
   - don't mangle with the main ([golden rule](https://www.atlassian.com/git/tutorials/merging-vs-rebasing))
